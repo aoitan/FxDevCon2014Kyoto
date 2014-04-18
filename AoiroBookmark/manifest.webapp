@@ -1,0 +1,19 @@
+{
+  "name": "Aoiro Bookmark",
+  "description": "Firefox Developers Conference 2014 in Kyoto Sample App",
+  "launch_path": "/index.html",
+  "icons": {
+    "128": "/img/icon-128.png"
+  },
+  "developer": {
+    "name": "YABUSHITA Masami",
+    "url": "http://www.gcg.bz/labo_blog/?author=2"
+  },
+  "default_locale": "en",
+  "typw": "certified",
+  "permissions": {
+    "systemXHR": {
+      "description": ""
+    }
+  }
+}
