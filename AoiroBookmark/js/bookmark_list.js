@@ -5,8 +5,11 @@ var DROPBOX_APP_KEY = '8lwf3rf1hii78nk';
 
 // Exposed for easy access in the browser console.
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
-var authDriver = new Dropbox.AuthDriver.Popup;
-authDriver.receiverUrl = "https://dl.dropboxusercontent.com/u/30646000/AoiroToDo/index.html";
+//var authDriver = new Dropbox.AuthDriver.Popup;
+//authDriver.receiverUrl = "https://dl.dropboxusercontent.com/u/30646000/AoiroToDo/index.html";
+var authDriver = new Dropbox.AuthDriver.Redirect;
+//authDriver.receiverUrl = "https://lolipop-dp07042166.ssl-lolipop.jp/FxDevCon2014Kyoto/index.html";
+authDriver.receiverUrl = "http://localhost/index.html";
 client.authDriver(authDriver);
 var bookmarkTable;
 
@@ -22,7 +25,7 @@ $(function () {
 
   // updateList will be called every time the table changes.
   function updateList() {
-    $('#list').empty();
+    $('#bookmarks').empty();
 
     var records = bookmarkTable.query();
 
@@ -62,9 +65,6 @@ $(function () {
     } else {
       // This will popup the browser to OAuth login.
       client.authenticate();
-
-      // setTimeoutして認証完了をポーリング
-//      window.setTimeout(authenticated, 1000);
     }
   });
 
@@ -87,15 +87,6 @@ $(function () {
 
         // Ensure that future changes update the list.
         datastore.recordsChanged.addListener(updateList);
-      });
-    } else {
-      client.authenticate({interactive: false}, function(err, cli) {
-        if (err) {
-          // error
-          window.alert('Authentication error: ' + err);
-          console.log('Authentication error: ' + err);
-          window.setTimeout(authenticated, 2000);
-        }
       });
     }
   }
@@ -149,6 +140,31 @@ $(function () {
       $('#newBookmark').val('');
       $('#newUrl').val('');
     }
+    return false;
+  });
+
+  $('#refreshList').submit(function (e) {
+    e.preventDefault();
+
+    if (!bookmarkTable) {
+      client.getDatastoreManager().openDefaultDatastore(function (error, datastore) {
+        if (error) {
+          window.alert('Error opening default datastore: ' + error);
+          console.log('Error opening default datastore: ' + error);
+        }
+
+        bookmarkTable = datastore.getTable('bookmarks');
+
+        // Populate the initial bookmark list.
+        updateList();
+
+        // Ensure that future changes update the list.
+        datastore.recordsChanged.addListener(updateList);
+      });
+    }
+
+    updateList();
+
     return false;
   });
 

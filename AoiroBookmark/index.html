@@ -13,12 +13,15 @@
       <h1>Bookmark list</h1>
     </header>
     <div id="main" style="display:none">
-      <ul id="list">
+      <ul id="bookmarks">
       </ul>
       <form id="addForm" method="post">
         <input id="newBookmark" type="text" placeholder="Enter a new bookmark title..." />
         <input id="newUrl" type="text" placeholder="Enter a new bookmark url..." />
         <button id="addButton" type="submit">Add Bookmark</button>
+      </form>
+      <form id="refreshList" method="post">
+        <button id="refreshButton" type="submit">List reload</button>
       </form>
     </div>
     <div id="login">

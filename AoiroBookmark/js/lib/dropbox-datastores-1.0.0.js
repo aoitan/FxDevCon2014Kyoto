@@ -5906,11 +5906,10 @@
     return e
   },
   x.Env.global.XMLHttpRequest ?
-    (!x.Env.global.XDomainRequest || 'withCredentials' in new XMLHttpRequest ?
-      (w = new XMLHttpRequest({mozSystem: true}),
+    (
+      (w = XMLHttpRequest,
        v = !1,
-       g = 'undefined' != typeof FormData && - 1 === navigator.userAgent.indexOf('Firefox')):
-      (w = XDomainRequest, v = !0, g = !1), m = !0
+       g = 'undefined' != typeof FormData && - 1 === navigator.userAgent.indexOf('Firefox'))
     ):
     (w = x.Env.require('xhr2'), v = !1, g = !1, m = !1),
   x.Env.global.Uint8Array)
@@ -6082,7 +6081,7 @@
       r,
       n,
       i = this;
-      if (e = x.Util.Xhr.ieXdr, this.isGet || null !== this.body || e ? (this.paramsToUrl(), null !== this.body && 'string' == typeof this.body && (this.headers['Content-Type'] = 'text/plain; charset=utf8'))  : this.paramsToBody(), this.xhr = new x.Util.Xhr.Request, e ? (this.xhr.onload = function () {
+      if (e = x.Util.Xhr.ieXdr, this.isGet || null !== this.body || e ? (this.paramsToUrl(), null !== this.body && 'string' == typeof this.body && (this.headers['Content-Type'] = 'text/plain; charset=utf8'))  : this.paramsToBody(), this.xhr = new x.Util.Xhr.Request({mozSystem: true}), e ? (this.xhr.onload = function () {
         return i.onXdrLoad()
       }, this.xhr.onerror = function () {
         return i.onXdrError()

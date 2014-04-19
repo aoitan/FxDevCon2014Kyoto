@@ -10,10 +10,21 @@
     "url": "http://www.gcg.bz/labo_blog/?author=2"
   },
   "default_locale": "en",
-  "typw": "certified",
+  "type": "privileged",
   "permissions": {
     "systemXHR": {
       "description": ""
     }
-  }
+  },
+  "origin": "app://fxdevcon2014",
+  "redirects": [
+    {
+      "from": "http://localhost/index.html",
+      "to": "/index.html"
+    },
+    {
+      "from": "app://fxdevcon2014/index.html",
+      "to": "/index.html"
+    }
+  ]
 }
