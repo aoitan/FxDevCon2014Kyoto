@@ -10,3 +10,9 @@
 /AoiroToDo/*.css~
 /AoiroToDo/*.js~
 /AoiroBookmark/js/*.js~
+/AoiroBookmark/*.webapp~
+/AoiroBookmark/*.swp
+/AoiroBookmark/*.html~
+/AoiroBookmark/js/lib/*.js~
+/AoiroBookmark/js/lib/*.swp
+/AoiroBookmark/js/*.swp
