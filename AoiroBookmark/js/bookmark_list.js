@@ -5,11 +5,9 @@ var DROPBOX_APP_KEY = '8lwf3rf1hii78nk';
 
 // Exposed for easy access in the browser console.
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
-//var authDriver = new Dropbox.AuthDriver.Popup;
-//authDriver.receiverUrl = "https://dl.dropboxusercontent.com/u/30646000/AoiroToDo/index.html";
 var authDriver = new Dropbox.AuthDriver.Redirect;
-//authDriver.receiverUrl = "https://lolipop-dp07042166.ssl-lolipop.jp/FxDevCon2014Kyoto/index.html";
 authDriver.receiverUrl = "http://localhost/index.html";
+authDriver.receiverUrl = "https://dl.dropboxusercontent.com/u/30646000/AoiroBookmark/index.html";
 client.authDriver(authDriver);
 var bookmarkTable;
 
@@ -21,6 +19,24 @@ $(function () {
       created: new Date(),
       url: inUrl
     });
+
+    var activity = new MozActivity({
+      // Ask for the "pick" activity
+      name: "save-bookmark",
+
+      // Provide the data required by the filters of the activity
+      data: {
+        type: "url",
+        url: inUrl
+      }
+    });
+    activity.onsuccess = function() {
+      var picture = this.result;
+      console.log("A picture has been retrieved");
+    };
+    activity.onerror = function() {
+      console.log(this.error);
+    };
   }
 
   // updateList will be called every time the table changes.
@@ -52,7 +68,6 @@ $(function () {
   client.authenticate({interactive: false}, function(err, cli) {
     if (err) {
       // error
-      window.alert('Authentication error: ' + err);
       console.log('Authentication error: ' + err);
     }
   });
@@ -76,7 +91,6 @@ $(function () {
 
       client.getDatastoreManager().openDefaultDatastore(function (error, datastore) {
         if (error) {
-          window.alert('Error opening default datastore: ' + error);
           console.log('Error opening default datastore: ' + error);
         }
 
@@ -105,14 +119,15 @@ $(function () {
   function renderBookmark(id, url, text) {
     return $('<li>').attr('id', id).append(
         $('<button>').addClass('delete').html('&times;')
-      ).append(
+      ).addClass(url ? 'url=' + url : '').append(
         $('<span>').append(
-          $('<button>').addClass('checkbox').html('&#x2713;')
+          $('<span>').addClass('text').text(text + ': ')
         ).append(
-          $('<span>').addClass('text').text(text)
+          $('<span>').addClass('link').append(
+            $('<a>').attr('href', url).text(url)
+          )
         )
-      )
-      .addClass(url ? 'url=' + url : '');
+      );
   }
 
   // Register event listeners to handle completing and deleting.
@@ -149,7 +164,6 @@ $(function () {
     if (!bookmarkTable) {
       client.getDatastoreManager().openDefaultDatastore(function (error, datastore) {
         if (error) {
-          window.alert('Error opening default datastore: ' + error);
           console.log('Error opening default datastore: ' + error);
         }
 
